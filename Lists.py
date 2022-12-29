@@ -27,5 +27,5 @@ while i <= 10:
     """else:
         print(i, "nieparzysta")"""
     i += 1
-print("Liczby parzyste: ", liczby_parzyste)
+print("Liczby parzysteeeeeeeeeeee: ", liczby_parzyste)
 
