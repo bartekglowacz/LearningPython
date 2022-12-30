@@ -19,13 +19,14 @@ print("Połączone listy: ", liczby)
 # print(liczby.index(0))
 # print(liczby.index(1))
 liczby_parzyste = []
+liczby_nieparzyste = []
 i = 0
 while i <= 10:
     if liczby.index(i) % 2 == 0:
-        #print(i, "parzysta")
+        # print(i, "parzysta")
         liczby_parzyste.append(i)
-    """else:
-        print(i, "nieparzysta")"""
+    else:
+        liczby_nieparzyste.append(i)
     i += 1
-print("Liczby parzysteeeeeeeeeeee: ", liczby_parzyste)
-
+print("Liczby parzyste: ", liczby_parzyste)
+print("Liczby nieparzyste: ", liczby_nieparzyste)
