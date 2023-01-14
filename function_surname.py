@@ -1,13 +1,23 @@
-person = []
 print("Podaj imię i nazwisko osoby: ")
 data = input()
+person = "                                                                     "
 x = len(data)-1
-print(f"Długość imienia: {x}")
-print(f"ostatni znak to: {data[x]}")
-#print(data[len(data)-1])
-# Pętla idąca tak długo aż zastanie znak spacji
-while data[x] != " ":
-    print(data[x])
-    if data[x].isspace:
+#print(f"Imię i nazwisko skłąda się z: {x} liter")
+#print(f"ostatni znak to: {data[x]}")
+
+
+for i in range(x, -1, -1):
+    if data[i] == " ":
         break
-    x -= 1
+    else:
+        # print(f"Element {i} = {data[i]}")
+        # print(f"{data[i]}", end="")
+        # print(data[i::+1]) # prawie działa!
+        person = data[i::+1]
+print(f"Nazwisko: {person}")
+
+
+
+
+
+
