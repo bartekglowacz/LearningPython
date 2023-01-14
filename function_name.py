@@ -2,12 +2,16 @@
 # Funkcja nr 2 - wyciagajaca z ciagu znakow nazwisko
 
 
-person = []
+person = "                                        "
 print("Podaj imię i nazwisko osoby: ")
 data = input()
-x = 0
+x = len(data)-1
 
 # Pętla idąca tak długo aż zastanie znak spacji
-while data[x] != " ":
-    print(data[x],end="")
-    x += 1
+for x in range (0, x, 1):
+    if data[x] == " ":
+        break
+    else:
+        #print(data[x], end="")
+        person = person.lstrip(" ") + data[x]
+print(f"Imię: {person}")
