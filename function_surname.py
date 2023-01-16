@@ -1,6 +1,6 @@
-print("Podaj imię i nazwisko osoby: ")
 data = input()
 person = "                                                                     "
+print("Podaj imię i nazwisko osoby: ")
 x = len(data)-1
 #print(f"Imię i nazwisko skłąda się z: {x} liter")
 #print(f"ostatni znak to: {data[x]}")
