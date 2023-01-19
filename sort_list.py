@@ -8,7 +8,12 @@ tab_desc = []
 tab_none = []
 
 print("""Wprowadź elemnty tablicy\nNaciśnięcie "k" kończy sekwencję""")
-
+x = 0
+while x != "k":
+    x = input()
+    tab.append(x)
+tab.remove("k")
+tab = [int(x) for x in tab]
 
 print("Jak posortować tablicę? Wpisz\nasc - rosnąco\ndesc - malejąco\nnone - bez zmian")
 mode = input()
