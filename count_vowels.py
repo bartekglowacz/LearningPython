@@ -57,18 +57,29 @@ def count_u(word):
         counter_u = 0
     return counter_u
 
+def count_y(word):
+    if "Y" in word:
+        counter_y = word.count("Y")
+        print("Ilość wystąpień litery Y: ", counter_y)
+    else:
+        print("Brak wystąpień litery Y")
+        counter_y = 0
+    return counter_y
+
 
 counter_a = count_a(word)
 counter_e = count_e(word)
 counter_i = count_i(word)
 counter_o = count_o(word)
 counter_u = count_u(word)
+counter_y = count_y(word)
+
 print(f"Poza funkcją:\ncounter_a = {counter_a}\ncounter_e = {counter_e}\ncounter_i = {counter_i}\n"
-      f"counter_o = {counter_o}\ncounter_u = {counter_u}")
+      f"counter_o = {counter_o}\ncounter_u = {counter_u}\ncounter_y = {counter_y}")
 
 
 def count_vowels(word):
-    counter_vowels = counter_a + counter_e + counter_i + counter_o + counter_u
+    counter_vowels = counter_a + counter_e + counter_i + counter_o + counter_u + counter_y
     print(f"W ciele funkcji - Ilość samogłosek we wpisanym wyrazie: {counter_vowels}")
     return counter_vowels
 
