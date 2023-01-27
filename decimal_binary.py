@@ -76,7 +76,3 @@ print(f"Lista 2: {exponents_all_HighToLow_str}")
 
 # print(len(exponents_str) == len(exponents_all_HighToLow_str)) # sprawdzenie czy tablice mają takie same długości
 print(binary_list)
-
-def summary():
-    """This function should summarize all results."""
-    raise NotImplemented("Implement me!")
