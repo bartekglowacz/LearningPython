@@ -7,6 +7,7 @@ For instance, if the function gets sent “5555555555555555”, then it should r
 
 import random
 
+
 card_number = []
 card_number1 = []
 card_number2 = []
