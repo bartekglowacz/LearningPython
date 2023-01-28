@@ -14,17 +14,20 @@ whole = math.floor(decimal_input / 2)
 rest = decimal_input % 2
 result = []
 
-while decimal_input > 0:
-    whole = math.floor(decimal_input / 2)
-    rest = decimal_input % 2
-    if rest == 1:
-        result.append("1")
-        decimal_input = whole
-    if rest == 0:
-        result.append("0")
-        decimal_input = whole
+if decimal_input > 0:
+    while decimal_input > 0:
+        whole = math.floor(decimal_input / 2)
+        rest = decimal_input % 2
+        if rest == 1:
+            result.append("1")
+            decimal_input = whole
+        if rest == 0:
+            result.append("0")
+            decimal_input = whole
 
-result2 = result[::-1]
-# print(f"\nResult list: {result2}")
-string_result = "".join(result2)
-print(f"Decimal form: {decimal_input_global}\nBinary form: {string_result}")
+    result2 = result[::-1]
+    # print(f"\nResult list: {result2}")
+    string_result = "".join(result2)
+    print(f"Decimal form: {decimal_input_global}\nBinary form: {string_result}")
+else:
+    print("Nieprawidłowa wartość")
