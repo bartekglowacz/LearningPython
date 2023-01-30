@@ -7,19 +7,32 @@ def calculator(var1, operator, var2):
     if operator == "+":
         return var1 + var2
     if operator == "-":
-        return var1-var2
+        return var1 - var2
     if operator == "*":
-        return var1*var2
+        return var1 * var2
     if operator == "/":
-        return var1/var2
+        return var1 / var2
 
 
-print("Number 1: ")
-var1 = int(input())
-print("Number 2: ")
-var2 = int(input())
-print("Operator: ")
-operator = input()
+print("Wprowadź równanie")
+equation = input()
 
-result = calculator(var1, operator, var2)
-print(result)
+if equation.find("+") > 0:
+    variables = equation.split("+")
+    operator = "+"
+if equation.find("-") > 0:
+    variables = equation.split("-")
+    operator = "-"
+if equation.find("*") > 0:
+    variables = equation.split("*")
+    operator = "*"
+if equation.find("/") > 0:
+    variables = equation.split("/")
+    operator = "/"
+
+# print(f"Variables: {variables}")
+var1 = int(variables[0])
+var2 = int(variables[1])
+# print(f"var1 = {var1}, var2 = {var2}, operator: {operator}")
+
+print(f"Wynik: {calculator(var1, operator, var2)}")
