@@ -1,35 +1,39 @@
 import math
-import csv
 
-def calculate_loop_antenna_coefficients(transmit_loop_diameter, receive_loop_diameter, transmit_loop_turns, receive_loop_turns, measurement_distance):
-    wavelength = 299792458 # prędkość światła w m/s
-    transmit_loop_area = math.pi * (transmit_loop_diameter/2)**2
-    receive_loop_area = math.pi * (receive_loop_diameter/2)**2
-    mutual_inductance = (wavelength**2 * transmit_loop_turns * receive_loop_turns * transmit_loop_area * receive_loop_area) / (4 * math.pi**2 * measurement_distance**3)
-    transmit_loop_inductance = (wavelength**2 * transmit_loop_turns**2 * transmit_loop_area) / (4 * math.pi**2 * measurement_distance**3)
-    receive_loop_inductance = (wavelength**2 * receive_loop_turns**2 * receive_loop_area) / (4 * math.pi**2 * measurement_distance**3)
-    transmit_loop_coefficient = 10*math.log10(mutual_inductance / transmit_loop_inductance)
-    receive_loop_coefficient = 10*math.log10(mutual_inductance / receive_loop_inductance)
-    return transmit_loop_coefficient, receive_loop_coefficient
+# stałe
+mu = 4 * math.pi * 1e-7  # permeability of free space
+c = 299792458  # speed of light in vacuum
 
-def save_to_csv(filename, data):
-    with open(filename, mode='w') as file:
-        writer = csv.writer(file)
-        for row in data:
-            writer.writerow(row)
+# funkcja do obliczania współczynnika antenowego w dB(S/m)
+def antenna_factor(lam, R, N):
+    return 10 * math.log10(4 * math.pi * R ** 2 / (N * lam ** 2))
 
-if __name__ == '__main__':
-    transmit_loop_diameter = float(input("Podaj średnicę anteny nadawczej: "))
-    receive_loop_diameter = float(input("Podaj średnicę anteny odbiorczej: "))
-    transmit_loop_turns = int(input("Podaj ilość zwojów w antenie nadawczej: "))
-    receive_loop_turns = int(input("Podaj ilość zwojów w antenie odbiorczej: "))
-    measurement_distance = float(input("Podaj odległość pomiarową między antenami: "))
+# wczytywanie danych z pliku
+filename = input("Podaj nazwę pliku z częstotliwościami pomiarowymi: ")
+frequencies = []
+with open(filename, 'r') as f:
+    for line in f:
+        frequencies.append(float(line.strip()))
 
-    transmit_loop_coefficient, receive_loop_coefficient = calculate_loop_antenna_coefficients(transmit_loop_diameter, receive_loop_diameter, transmit_loop_turns, receive_loop_turns, measurement_distance)
+# wczytywanie danych od użytkownika
+diameter_tx = float(input("Podaj średnicę anteny nadawczej w metrach: "))
+diameter_rx = float(input("Podaj średnicę anteny odbiorczej w metrach: "))
+turns_tx = int(input("Podaj liczbę zwojów w antenie nadawczej: "))
+turns_rx = int(input("Podaj liczbę zwojów w antenie odbiorczej: "))
+distance = float(input("Podaj odległość pomiarową w metrach: "))
 
-    print("Współczynnik antenowy anteny nadawczej: {} dB(S/m)".format(transmit_loop_coefficient))
-    print("Współczynnik antenowy anteny odbiorczej: {} dB(S/m)".format(receive_loop_coefficient))
+# obliczanie długości fali i promienia anteny
+wavelengths = [c / freq for freq in frequencies]
+radii_tx = [diameter_tx / 2 for freq in frequencies]
+radii_rx = [diameter_rx / 2 for freq in frequencies]
 
-    filename = input("Podaj nazwę pliku do zapisu: ")
-    save_to_csv(filename, [['Antena', 'Współczynnik antenowy (dB(S/m))'], ['Antena nadawcza', transmit_loop_coefficient], ['Antena odbiorcza', receive_loop_coefficient]])
-    print("Wynik został zapisany do pliku {}".format(filename))
+# obliczanie współczynników antenowych i zapisywanie wyników do pliku
+filename_output = input("Podaj nazwę pliku do zapisu wyników: ")
+with open(filename_output, 'w') as f:
+    f.write("Częstotliwość (MHz)\tWspółczynnik antenowy (dB(S/m))\n")
+    for i in range(len(frequencies)):
+        lam = wavelengths[i]
+        R = (radii_tx[i] * radii_rx[i]) / distance
+        N = turns_tx * turns_rx
+        af = antenna_factor(lam, R, N)
+        f.write("{:.2f}\t{:.2f}\n".format(frequencies[i], af))
