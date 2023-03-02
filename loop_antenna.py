@@ -1,39 +1,46 @@
-import math
+"""
+Do obliczenia wartości pola magnetycznego pomiędzy kwadratowymi cewkami Helmholtza w ich centrum geometrycznym możemy użyć wzoru:
+B = μ₀ * N * I / R,
+gdzie:
 
-# stałe
-mu = 4 * math.pi * 1e-7  # permeability of free space
-c = 299792458  # speed of light in vacuum
+B to pole magnetyczne,
+μ₀ to przenikalność magnetyczna próżni (μ₀ = 4π * 10^-7 T*m/A),
+N to ilość zwojów w każdej z cewek,
+I to prąd płynący przez cewki (w Amperach),
+R to promień cewek (w metrach).
+W przypadku cewek kwadratowych, promień R to połowa długości boku kwadratu, czyli R = a/2, gdzie a to długość boku cewki.
 
-# funkcja do obliczania współczynnika antenowego w dB(S/m)
-def antenna_factor(lam, R, N):
-    return 10 * math.log10(4 * math.pi * R ** 2 / (N * lam ** 2))
+Możemy więc zapisać wzór na pole magnetyczne w postaci:
+B = μ₀ * N * I / (a/2)
 
-# wczytywanie danych z pliku
-filename = input("Podaj nazwę pliku z częstotliwościami pomiarowymi: ")
-frequencies = []
-with open(filename, 'r') as f:
-    for line in f:
-        frequencies.append(float(line.strip()))
+Aby uwzględnić fakt, że cewki są kwadratowe, a nie okrągłe, musimy wprowadzić poprawkę kształtu cewki. W przypadku cewek Helmholtza, poprawka ta wynosi 1,0472, czyli:
+B = μ₀ * N * I * 1,0472 / (a/2)
 
-# wczytywanie danych od użytkownika
-diameter_tx = float(input("Podaj średnicę anteny nadawczej w metrach: "))
-diameter_rx = float(input("Podaj średnicę anteny odbiorczej w metrach: "))
-turns_tx = int(input("Podaj liczbę zwojów w antenie nadawczej: "))
-turns_rx = int(input("Podaj liczbę zwojów w antenie odbiorczej: "))
-distance = float(input("Podaj odległość pomiarową w metrach: "))
+Warto zauważyć, że wzór ten dotyczy tylko pola magnetycznego w centrum geometrycznym cewek Helmholtza. W innych punktach wewnątrz cewek pole może się różnić.
 
-# obliczanie długości fali i promienia anteny
-wavelengths = [c / freq for freq in frequencies]
-radii_tx = [diameter_tx / 2 for freq in frequencies]
-radii_rx = [diameter_rx / 2 for freq in frequencies]
+Podsumowując, do obliczenia wartości pola magnetycznego pomiędzy kwadratowymi cewkami Helmholtza w ich centrum geometrycznym należy użyć wzoru:
+B = μ₀ * N * I * 1,0472 / (a/2)
+gdzie N to ilość zwojów w każdej z cewek, I to prąd płynący przez cewki (w Amperach), a a to długość boku cewki (w metrach).
 
-# obliczanie współczynników antenowych i zapisywanie wyników do pliku
-filename_output = input("Podaj nazwę pliku do zapisu wyników: ")
-with open(filename_output, 'w') as f:
-    f.write("Częstotliwość (MHz)\tWspółczynnik antenowy (dB(S/m))\n")
-    for i in range(len(frequencies)):
-        lam = wavelengths[i]
-        R = (radii_tx[i] * radii_rx[i]) / distance
-        N = turns_tx * turns_rx
-        af = antenna_factor(lam, R, N)
-        f.write("{:.2f}\t{:.2f}\n".format(frequencies[i], af))
+
+
+
+
+
+Wzór na pole magnetyczne wewnątrz cewek Helmholtza, który podałem wcześniej, dotyczy pola magnetycznego w punkcie,
+który znajduje się w środku geometrycznym obu cewek, czyli w punkcie, gdzie osie obu cewek się przecinają. W
+przypadku, gdy chcemy obliczyć pole magnetyczne w innym punkcie, musimy skorzystać z bardziej złożonego wzoru,
+który uwzględnia położenie punktu względem cewek.
+
+Wzór ten ma postać:
+B = μ₀ * N * I / (2 * R) * [(z + d/2) / sqrt(R² + (z + d/2)²) - (z - d/2) / sqrt(R² + (z - d/2)²)]
+gdzie:
+
+μ₀ to przenikalność magnetyczna próżni, N to liczba zwojów w każdej z cewek, I to prąd płynący przez cewki,
+R to promień cewek (w przypadku cewek Helmholtza jest to połowa długości boku kwadratu), z to odległość punktu od
+płaszczyzny cewek, d to odległość między cewkami (również połowa długości boku kwadratu). Warto zauważyć, że ten wzór
+jest bardziej skomplikowany niż wzór dla pola magnetycznego w punkcie centralnym i wymaga podania dokładnego
+położenia punktu względem cewek. W praktyce, przy pomiarach pola magnetycznego wewnątrz cewek Helmholtza, stosuje się
+przede wszystkim pomiar w punkcie centralnym, ponieważ jest to najprostszy i najdokładniejszy sposób pomiaru pola
+magnetycznego.
+"""
