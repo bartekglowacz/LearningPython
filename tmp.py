@@ -1,2 +1,4 @@
-lista = [1, 2, 3, 4, 5]
-print(len(lista))
+file = open("frequencies.txt", "r")
+frequencies = file.readlines()
+frequencies = [float(x) for x in frequencies]
+print(frequencies)
