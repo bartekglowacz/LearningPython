@@ -1,4 +1,10 @@
-file = open("frequencies.txt", "r")
-frequencies = file.readlines()
-frequencies = [float(x) for x in frequencies]
-print(frequencies)
+def read_current():
+    file = open("current.txt", "r")
+    current = file.readlines()
+    current = [float(x.replace(",", ".")) / 1000 for x in current]
+    # print(current)
+    return current
+
+
+current_list = read_current()
+print(current_list)
