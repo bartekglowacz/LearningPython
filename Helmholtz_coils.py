@@ -1,7 +1,7 @@
 """Program oblicza natężenie pola magnetycznego pomiędzy cewkami, w różnych odległościach od nich, licząc od środka
 geometrycznego układu"""
 import math
-
+import matplotlib.pyplot as draw
 
 def read_current():
     file = open("current.txt", "r")
@@ -26,7 +26,6 @@ def read_distance():
 
 class HelmholtzCOils:
     def __init__(self, side_length, number_off_turns, distance_between_coils):
-        self.current = None
         self.side_length = side_length
         self.number_of_turns = number_off_turns
         self.distance = distance_between_coils
@@ -39,7 +38,9 @@ class HelmholtzCOils:
         ur = 1.00000037  # przenikalnosc powietrza
         u0 = 4 * math.pi * 10 ** -7
         i = read_current()[0]
-        for z in self.distance:
+        # i = 1 # [A]
+        distance = read_distance()
+        for z in distance:
             component1 = 2 * u0 * ur * self.number_of_turns * (self.side_length / 2) ** 2 * i / math.pi
             component2 = (self.side_length / 2) ** 2 + (z + self.distance / 2) ** 2
             component3 = (2 * (self.side_length / 2) ** 2 + (z + self.distance / 2) ** 2) ** (1 / 2)
@@ -58,8 +59,22 @@ class HelmholtzCOils:
             H_dBuA_list.append(H_dBuA)
         return B_list, B_uT_list, H_list, H_dBuA_list
 
+
 helmholtz_coil = HelmholtzCOils(1.04, 100, 0.566)
+magnetic_field_dBuA = helmholtz_coil.magnetic_induction()[3]
+distance_from_coils = read_distance()
+
+print(f"{len(distance_from_coils)}, {distance_from_coils}")
+print(f"{len(magnetic_field_dBuA)}, {magnetic_field_dBuA}")
 
 result = open("result.txt", "w")
-for z in range(0, len(helmholtz_coil.distance)):
-    result.write(str(helmholtz_coil.distance) + "\t" + str(helmholtz_coil.magnetic_induction()[3]))
+result.write("z [m]\tH [dBuA/m]\n")
+for value in range(0, len(distance_from_coils)):
+    result.write(str("%01.2f" % distance_from_coils[value]) + "\t" + str(magnetic_field_dBuA[value]) + "\n")
+
+draw.plot(distance_from_coils, magnetic_field_dBuA)
+draw.xlabel("odległość od cewek [m]")
+draw.ylabel("A [dBuA/m]")
+draw.grid()
+draw.autoscale()
+draw.show()
