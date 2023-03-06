@@ -1,10 +1,10 @@
-def read_current():
-    file = open("current.txt", "r")
-    current = file.readlines()
-    current = [float(x.replace(",", ".")) / 1000 for x in current]
-    # print(current)
-    return current
+import random
 
+print("Poraj zakres losowania liczb\nstart:")
+start = int(input())
+print("stop: ")
+stop = int(input())
 
-current_list = read_current()
-print(current_list)
+print(f"losuję z zakresu od {start} do {stop}")
+level = random.randint(start, stop)
+print(level)
