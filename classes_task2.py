@@ -47,15 +47,17 @@ class FunkcjaKwadratowa:
             return "brak rozwiązań rzeczywistych"
 
     def drawing_function(self):
-        print("Formuła: ", formatted_formula)
+        vertex_x = -self.b / (2 * self.a)
+        vertex_y = -self.delta / (4 * self.a)
+        print(f"Parametry wierzchołka: {vertex_x}, {vertex_y}")
         x_list = []
         y_list = []
         plt.ion()
         plt.xlabel("x")
         plt.ylabel("y")
         plt.grid()
-        x = -10
-        while x < 10:
+        x = vertex_x - 10
+        while x < vertex_x + 10:
             x_list.append(x)
             y = eval(formatted_formula)
             y_list.append(y)
