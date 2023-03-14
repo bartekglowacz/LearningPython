@@ -5,6 +5,7 @@ funkcji. Należy zwrócić uwagę na przypadki gdy a=0, b=0 lub c=0, a także ob
 liczbie, jednym lub zerze rozwiązań.
 """
 import math
+import classes_task2
 
 
 class FunkcjaKwadratowa:
@@ -24,7 +25,6 @@ class FunkcjaKwadratowa:
             print(f"{x0 = }")
         else:
             print("brak rozwiązań rzeczywistych")
-
 
 funkcja = FunkcjaKwadratowa(-2, 10, -2)
 funkcja.rozwiaz()
