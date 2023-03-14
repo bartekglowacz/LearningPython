@@ -71,7 +71,7 @@ class FunkcjaKwadratowa:
         plt.show()
 
 
-print("Wprowadź równanie. Nie musisz pisać znaków mnożenia. Przed x zawsze musisz podać liczbę")
+print("Wprowadź równanie w postaci ax^2+bx+c. Nie musisz pisać znaków mnożenia. Przed x zawsze musisz podać liczbę")
 function1 = FunkcjaKwadratowa()
 formatted_formula = function1.format_formula()
 print(f"Formuła po formatowaniu: {formatted_formula}")
