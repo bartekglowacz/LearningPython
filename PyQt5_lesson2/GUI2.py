@@ -7,7 +7,20 @@ W GUI musi finalnie znaleźć się wykres na podstawie wczytanych danych, odpowi
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QTableWidget, QTableWidgetItem
-import matplotlib.pyplot as plt
+from PyQt5.QtGui import QPainter
+from matplotlib.backends.backend_qt5agg import FigureCanvas
+from matplotlib.figure import Figure
+
+
+class MplCanvas(FigureCanvas):
+    def __init__(self, parent=None):
+        self.figure = Figure()
+        super().__init__(self.figure)
+        self.setParent(parent)
+
+    def paintEvent(self, event):
+        super().paintEvent(event)
+        self.draw()
 
 
 class Ui_MainWindow(object):
@@ -37,6 +50,7 @@ class Ui_MainWindow(object):
         self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphicsView.setGeometry(QtCore.QRect(190, 40, 591, 401))
         self.graphicsView.setObjectName("graphicsView")
+
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(280, 460, 181, 71))
         self.label.setObjectName("label")
@@ -58,11 +72,15 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.canvas = MplCanvas(self.graphicsView)  # Dodajemy canvas dla wykresu
+        self.scene = QtWidgets.QGraphicsScene()
+        self.scene.addWidget(self.canvas)
+        self.graphicsView.setScene(self.scene)
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.BrowseButton.setText(_translate("MainWindow", "Browse"))
-        self.label.setText(_translate("MainWindow", "EndStatus"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionClose.setText(_translate("MainWindow", "Close"))
 
@@ -98,24 +116,25 @@ class Ui_MainWindow(object):
 
         self.tableWidget.resizeColumnsToContents()  # Dopasowanie szerokości kolumn
 
-        # Tworzenie wykresu
-        plt.figure()
-        plt.plot(x_data, y_data)
-        plt.xlabel('Częstotliwość (MHz)')
-        plt.ylabel('Poziom (dBuV)')
-        plt.title('Wykres')
-        plt.tight_layout()  # Dopasowanie układu wykresu
-        plt.xlim(min(x_data), max(x_data))  # Przeskalowanie osi X
-        plt.ylim(min(y_data), max(y_data))  # Przeskalowanie osi Y
-        plt.show()
+        self.canvas.figure.clear()  # Czyszczenie poprzedniego wykresu
+
+        ax = self.canvas.figure.add_subplot(111)  # Tworzenie podwykresu
+
+        ax.plot(x_data, y_data)
+        ax.set_xlabel('f [MHz]')
+        ax.set_ylabel('Level [dBuV]')
+        ax.set_title('Wykres')
+        ax.grid()
+
+        self.canvas.draw()  # Odświeżenie wyświetlania wykresu w canvas
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
